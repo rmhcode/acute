@@ -26,7 +26,7 @@
 (link: &quot;Yes&quot;)[(set: $icad to &quot;yes&quot;)(go-to: &quot;Hours&quot;)]
 
 (link: &quot;No&quot;)[(set: $icad to &quot;no&quot;)(go-to: &quot;Hours&quot;)]</tw-passagedata><tw-passagedata pid="5" name="End" tags="" position="1275,500" size="100,100">Options
-(if:$type is &quot;isch&quot; and $isize is 3 and $nihss &gt; 1 and $lyse is &quot;no&quot; and $hr is &quot;yes&quot;)[[RAISE-&gt;RAISE]]
+(if:$type is &quot;isch&quot; and $isize is 3 and $nihss &gt; 3 and $lyse is &quot;no&quot; and $hr is &quot;yes&quot;)[[RAISE-&gt;RAISE]]
 (if:$type is &quot;haem&quot; and $nihss &gt; 5 and $size is &quot;&gt;20&quot; and $mrs &lt; 4)[[EVACUATE-&gt;EVACUATE]]
 (if:$type is &quot;haem&quot;)[[EVACUATE-MRI (not if evacuate)-&gt;EVACUATE-MRI]]
 (if:$type is &quot;haem&quot; and $ecr is &quot;yes&quot; and $isize is 1)[[SICARIO-&gt;SICARIO]]
@@ -58,7 +58,8 @@ Minimally invasive evacuation vs standard care
 (link: &quot;&gt;20mL&quot;)[(set: $size to &quot;&gt;20&quot;)(go-to: &quot;5&quot;)]
 
 (link: &quot;&lt;20mL&quot;)[(set: $size to &quot;&lt;20&quot;)(go-to: &quot;5&quot;)]</tw-passagedata><tw-passagedata pid="9" name="6" tags="" position="1025,500" size="100,100">mRS score
-(input: bind $mrs, &quot;&quot;)(link-repeat: &quot;Submit&quot;)[(if: $mrs is &quot;&quot;)[(replace: ?error)[Please enter a value.]](else: )[(set: $mrs to (num: $mrs))(if: $mrs &gt;= 0 and $mrs &lt;= 5)[(goto: &quot;LKW&quot;)](else: )[(replace: ?error)[Invalid entry. Please enter a number from 0 to 5.]]]]
+(input: bind $mrs, &quot;&quot;)
+(link-repeat: &quot;Submit&quot;)[(if: &quot;012345&quot; contains $mrs and $mrs is not &quot;&quot;)[(set: $mrs to (num: $mrs))(goto: &quot;LKW&quot;)](else: )[(set: $mrs to &quot;&quot;)(replace: ?error)[Invalid entry. Please enter a number from 0 to 5.]]]
 |error&gt;[]
 0	No symptoms
 1	No significant disability despite symptoms; able to carry out all usual duties and activities
@@ -74,7 +75,12 @@ Minimally invasive evacuation vs standard care
 
 (link: &quot;&lt;100mL&quot;)[(set: $isize to 2)(go-to: &quot;4&quot;)]
 
-(link: &quot;&lt;50mL&quot;)[(set: $isize to 3)(go-to: &quot;4&quot;)]</tw-passagedata><tw-passagedata pid="12" name="SICARIO" tags="" position="1400,625" size="100,100"></tw-passagedata><tw-passagedata pid="13" name="LKW" tags="" position="1150,500" size="100,100">Last seen well:
+(link: &quot;&lt;50mL&quot;)[(set: $isize to 3)(go-to: &quot;4&quot;)]</tw-passagedata><tw-passagedata pid="12" name="SICARIO" tags="" position="1400,625" size="100,100">Observational study: large core ischaemic stroke (&gt;100ml) treated 
+with EVT on three month functional outcomes
+• Consent is acquired after completion of procedure
+• &#39;&#39;Needs to be considered pre-EVT&#39;&#39; (covered in Code Stroke 
+SmartPhrase)
+• Treating team to flag patient with research group</tw-passagedata><tw-passagedata pid="13" name="LKW" tags="" position="1150,500" size="100,100">Last seen well:
 
 (link: &quot;&lt;4.5h&quot;)[(set: $lkw to &quot;&lt;4.5&quot;)(go-to: &quot;End&quot;)]
 
@@ -134,14 +140,27 @@ absolute mismatch &gt;15ml
 bolus
 • Randomised in hours
 • If not for EVT, require 2-6 hour CTB/CTA (post-drug commencement)
-• 24 hour imaging: MRI/A or CT brain/angiogram/perfusion</tw-passagedata><tw-passagedata pid="18" name="RAISE" tags="" position="1275,875" size="100,100"></tw-passagedata><tw-passagedata pid="19" name="EVACUATE-MRI" tags="" position="1275,625" size="100,100">Acute ICH &lt;24 hours not enrolled in EVACUATE
+• 24 hour imaging: MRI/A or CT brain/angiogram/perfusion</tw-passagedata><tw-passagedata pid="18" name="RAISE" tags="" position="1275,875" size="100,100">BB-031 (inhibits vWF) vs. placebo in acute ischaemic stroke
+• Within 24 hours
+&#39;&#39;Inclusion&#39;&#39;
+Definite anterior circulation stroke (vessel occlusion or consistent perfusion deficit), NIHSS &gt;3
+Pertinent &#39;&#39;exclusion&#39;&#39;:
+• No thrombolysis or contraindications to thrombolysis
+• Concomitant tirofiban within 12 hours (consider in tandem occlusions)
+• ASPECTS 0-6, or core &gt;50ml
+• If do not proceed to EVT, need repeat angiography at 2-6 hours
+• 24-hour imaging:
+• MRI and MRA, or
+• DECT and CT</tw-passagedata><tw-passagedata pid="19" name="EVACUATE-MRI" tags="" position="1275,625" size="100,100">Acute ICH &lt;24 hours not enrolled in EVACUATE
 If within hours, alert research nurses for bloods
 Let &#39;&#39;Chloe&#39;&#39; know --&gt; for Day 3-7 MRI</tw-passagedata><tw-passagedata pid="20" name="EMU" tags="" position="1150,1000" size="100,100">Age &gt;22
 Within 12 hours of stroke, bleed, mimic
 MTDM or patient must consent</tw-passagedata><tw-passagedata pid="21" name="Wellumio" tags="" position="1400,750" size="100,100">Scan within 72 hours
 Present within 24 hours of symptom onset
 Contact James
---&gt; two MRI orders</tw-passagedata></tw-storydata>
+--&gt; two MRI orders</tw-passagedata><tw-passagedata pid="22" name="Untitled Passage" tags="" position="325,150" size="100,100">old mrs
+(input: bind $mrs, &quot;&quot;)(link-repeat: &quot;Submit&quot;)[(if: $mrs is &quot;&quot;)[(replace: ?error)[Please enter a value.]](else: )[(set: $mrs to (num: $mrs))(if: $mrs &gt;= 0 and $mrs &lt;= 5)[(goto: &quot;LKW&quot;)](else: )[(set: $mrs to &quot;&quot;)(replace: ?error)[Invalid entry. Please enter a number from 0 to 5.]]]]
+|error&gt;[]</tw-passagedata></tw-storydata>
 <script title="Twine engine code" data-main="harlowe">(function(){"use strict";
 var require,define;!function(){var e={},r={};require=function(i){var n=e[i];return n&&(r[i]=n[1].apply(void 0,n[0].map(require)),e[i]=void 0),r[i]},(define=function(r,i,n){if("function"==typeof r)return r();e[r]=[i,n]}).amd=!0}();/*!
  * https://github.com/paulmillr/es6-shim
