@@ -17,36 +17,39 @@
 
 (link: &quot;Yes&quot;)[(set: $lyse to &quot;yes&quot;)(go-to: &quot;3&quot;)]
 
-(link: &quot;No&quot;)[(set: $lyse to &quot;no&quot;)(go-to: &quot;3&quot;)]</tw-passagedata><tw-passagedata pid="3" name="3" tags="" position="1150,375" size="100,100">ECR
+(link: &quot;No&quot;)[(set: $lyse to &quot;no&quot;)(go-to: &quot;3&quot;)]</tw-passagedata><tw-passagedata pid="3" name="3" tags="" position="1150,375" size="100,100">ECR considered or happening?
 
 (link: &quot;Yes&quot;)[(set: $ecr to &quot;yes&quot;)(go-to: &quot;Size2&quot;)]
 
-(link: &quot;No&quot;)[(set: $ecr to &quot;yes&quot;)(go-to: &quot;Hours&quot;)]</tw-passagedata><tw-passagedata pid="4" name="4" tags="" position="1400,375" size="100,100">Relevant severe ICAD/very high likelihood stent?
+(link: &quot;No&quot;)[(set: $ecr to &quot;yes&quot;)(go-to: &quot;Site&quot;)]</tw-passagedata><tw-passagedata pid="4" name="4" tags="" position="1400,375" size="100,100">Relevant severe ICAD/very high likelihood stent?
 
-(link: &quot;Yes&quot;)[(set: $icad to &quot;yes&quot;)(go-to: &quot;Hours&quot;)]
+(link: &quot;Yes&quot;)[(set: $icad to &quot;yes&quot;)(go-to: &quot;Site&quot;)]
 
-(link: &quot;No&quot;)[(set: $icad to &quot;no&quot;)(go-to: &quot;Hours&quot;)]</tw-passagedata><tw-passagedata pid="5" name="End" tags="" position="1275,500" size="100,100">Options
+(link: &quot;No&quot;)[(set: $icad to &quot;no&quot;)(go-to: &quot;Site&quot;)]</tw-passagedata><tw-passagedata pid="5" name="End" tags="" position="1275,500" size="100,100">Options
 (if:$type is &quot;isch&quot; and $isize is 3 and $nihss &gt; 3 and $lyse is &quot;no&quot; and $hr is &quot;yes&quot;)[[RAISE-&gt;RAISE]]
+(if:$type is &quot;isch&quot; and $mrs &lt; 4 and $nihss &gt; 5 and $lysis is &quot;yes&quot; and $hr is &quot;yes&quot;)[[STARS-&gt;STARS]]
 (if:$type is &quot;haem&quot; and $nihss &gt; 5 and $size is &quot;&gt;20&quot; and $mrs &lt; 4)[[EVACUATE-&gt;EVACUATE]]
 (if:$type is &quot;haem&quot;)[[EVACUATE-MRI (not if evacuate)-&gt;EVACUATE-MRI]]
-(if:$type is &quot;haem&quot; and $ecr is &quot;yes&quot; and $isize is 1)[[SICARIO-&gt;SICARIO]]
-(if:$lkw is &quot;&lt;4.5&quot; and $type is &quot;isch&quot;)[[ACT-GLOBAL (If on DOAC &lt;24h)-&gt;ACT-GLOBAL]]
-(if:$ecr is &quot;yes&quot; and $mrs &lt; 3 and $icad is &quot;no&quot;)[[EXTEND-AGNES TNK-&gt;EXTEND]]
+(if:$type is &quot;isch&quot; and $ecr is &quot;yes&quot; and $isize is 1 and $site is &quot;ant&quot;)[[SICARIO-&gt;SICARIO]]
+(if:$lkw is &quot;&lt;4.5&quot; and $type is &quot;isch&quot;)[[ACT-GLOBAL (If on DOAC given &lt;24h)-&gt;ACT-GLOBAL]]
+(if:$ecr is &quot;yes&quot; and $site is &quot;ant&quot; and $mrs &lt; 3 and $isize &gt; 1 and $icad is &quot;no&quot;)[[EXTEND-AGNES TNK-&gt;EXTEND]]
 (if:$type is &quot;isch&quot; and $mrs &lt; 4 and $icad is &quot;no&quot;)[[POST-ETERNAL (BASILAR)-&gt;POST-ETERNAL]]
-(if:$type is &quot;isch&quot; and $mrs &lt; 4 and $nihss &gt; 5 and $lysis is &quot;yes&quot; and $hr is &quot;yes&quot;)[[STARS-&gt;STARS]]
+Imaging trials / in addition:
 (if:$lkw is &quot;&lt;12&quot; or $lkw is &quot;&lt;4.5&quot;)[[EMU Study-&gt;EMU]]
-(if:$ecr is &quot;yes&quot; and $mrs &lt; 3 and $icad is &quot;no&quot;)[[Wellumio-&gt;Wellumio]]
+(if:$type is &quot;isch&quot;)[[Wellumio-&gt;Wellumio]]
 Values used: &#39;&#39;Type&#39;&#39; $type, &#39;&#39;In hours (8-5pm)&#39;&#39; $hr
 &#39;&#39;mRS&#39;&#39; $mrs, &#39;&#39;NIHSS&#39;&#39; $NIHSS, &#39;&#39;LKW&#39;&#39; $lkw
 &#39;&#39;lysed&#39;&#39; $lyse, &#39;&#39;ECR&#39;&#39; $ecr, &#39;&#39;core size&#39;&#39; $isize ml,&#39;&#39; likely icad needing stent&#39;&#39; $icad
 &#39;&#39;bleed size&#39;&#39; $size</tw-passagedata><tw-passagedata pid="6" name="5" tags="" position="900,500" size="100,100">NIHSS score:
 (input: bind $nihss, &quot;&quot;)
-
-(link-repeat: &quot;Submit&quot;)[(set: $nihss to (num: $nihss))(if: $nihss &gt; 0)[(goto: &quot;6&quot;)](else: )[(replace: ?error)[Please enter a value greater than 0.]]]
+|warn&gt;[](live: 0.1s)[(if: (num: $nihss) &gt; 25 and (num: $nihss) &lt;= 42)[(replace: ?warn)[**Warning:** That number is very high, double check.]](else: )[(replace: ?warn)[]]]
+(link-repeat: &quot;Submit&quot;)[(if: $nihss is not &quot;&quot; and (num: $nihss) &gt;= 0 and (num: $nihss) &lt;= 42 and (num: $nihss) is (round: (num: $nihss)))[(set: $nihss to (num: $nihss))(goto: &quot;6&quot;)](else: )[(set: $nihss to &quot;&quot;)(replace: ?error)[Invalid entry. Please enter a valid NIHSS.]]]
 |error&gt;[]</tw-passagedata><tw-passagedata pid="7" name="EVACUATE" tags="" position="1150,625" size="100,100">//EVACUATE//
-&lt;8 hours onset time &#39;&#39;or&#39;&#39; 8 hours within wake up time
-&#39;&#39;Needs CTA&#39;&#39;
+SURGERY possible &lt;8 hours onset time &#39;&#39;or&#39;&#39; 8 hours within wake up time
+&#39;&#39;Needs CTA&#39;&#39; (rule out vascular lesion)
 &#39;&#39;Call Bruce&#39;&#39;
+Supratentorial only, atraumatic (if felt ICH is secondary to trauma, not eligible)
+Excluded: low plt, INR &gt;1.4
 
 Minimally invasive evacuation vs standard care
 • ICH ≥ 20mL
@@ -87,25 +90,28 @@ SmartPhrase)
 (link: &quot;&lt;12h&quot;)[(set: $lkw to &quot;&lt;12&quot;)(go-to: &quot;End&quot;)]
 
 (link: &quot;&lt;24h&quot;)[(set: $lkw to &quot;&lt;24&quot;)(go-to: &quot;End&quot;)]
-If &gt;24h, not eligible for acute trials</tw-passagedata><tw-passagedata pid="14" name="ACT-GLOBAL" tags="" position="1150,750" size="100,100">//ACT-GLOBAL//
-IVT (standard or low dose) vs TNK in those with &#39;&#39;DOAC in previous 24 hours&#39;&#39;
-Follow up imaging is standard of care</tw-passagedata><tw-passagedata pid="15" name="EXTEND" tags="" position="1275,750" size="100,100">//EXTEND-AGNES TNK//
-IA TNK vs. best practice in anterior circulation LVO undergoing EVT
-• Intracranial or extracranial ICA, M1, or M2
+If &gt;24h, not eligible for acute trials</tw-passagedata><tw-passagedata pid="14" name="ACT-GLOBAL" tags="" position="1150,750" size="100,100">//ACT-GLOBAL (ACT-WHEN)//
+IVT (standard 0.25mg/kg or low dose 0.18mg/kg) vs TNK in those with &#39;&#39;DOAC in previous 24 hours&#39;&#39;
+Minor stroke patients with non-disabling symptoms are excluded (generally, complete hemianopia, severe aphasia &gt;=2, visual extinction &gt;=1m, weakness scores of &gt;=2 on either arm or either leg, any other considered disabling by patient/family/clinician/prevent basic ADLs)
+
+//Follow up imaging// is standard of care</tw-passagedata><tw-passagedata pid="15" name="EXTEND" tags="" position="1275,750" size="100,100">//EXTEND-AGNES TNK//
+IA TNK vs. best practice in &#39;&#39;&#39;&#39;anterior circulation LVO&#39;&#39;&#39;&#39; undergoing EVT
+• &#39;&#39;Intracranial or extracranial ICA, M1, or M2&#39;&#39;
 • Imaging within 4 hours of randomisation (consideration for transfers)
 • Up to 24 hours
-• 0-6 hours: ASPECTS ≥3; 6-24 hours: requires CTP core &lt;100m
+• 0-6 hours: &#39;&#39;ASPECTS ≥3&#39;&#39;; 6-24 hours: &#39;&#39;ALSO&#39;&#39; requires &#39;&#39;CTP core &lt;100m&#39;&#39;
 • mRS 0-2
-• Pertinent exclusion: high likelihood of requiring stenting (and therefore 
-additional antithrombotics)
 
-&#39;&#39;Workflow&#39;&#39;
-• Patient is thrombolysed with TNK
-• Member of research team/BPT will manage vial for EVT
+//Pertinent exclusion//
+- high likelihood of requiring stenting (and therefore additional antithrombotics)
+- haemorrhage
+- ASPECTS 0-1 &#39;&#39;or&#39;&#39; core &gt;100mL if &gt;6h
+
+//Workflow//
+• If patient is thrombolysed with TNK, member of research team/BPT will manage vial for EVT can do just vial alone if wt &lt;80 (systemic lysis dose 20mg, IA TNK 5mg)
 Follow up at 24 hours:
-• 1st preference: MRI with PWI (request AGNES PRAISE protocol with HREC 
-2018.247)
-• AGNES PRAISE needs to be free texted
+• 1st preference: MRI with PWI (request AGNES PRAISE protocol with HREC 2023.138)
+-- AGNES PRAISE needs to be free texted
 • 2nd preference: DECT with CTP (contrast to be given after DECT)</tw-passagedata><tw-passagedata pid="16" name="POST-ETERNAL" tags="" position="1400,875" size="100,100">POST-ETERNAL
 • TNK vs best practice in basilar artery occlusion
 • Up to 24 hours, mRS 0-3
@@ -148,19 +154,48 @@ Pertinent &#39;&#39;exclusion&#39;&#39;:
 • No thrombolysis or contraindications to thrombolysis
 • Concomitant tirofiban within 12 hours (consider in tandem occlusions)
 • ASPECTS 0-6, or core &gt;50ml
+- Weight &gt;125kg
+- Coagulopathy, previous ICH, eGFR &lt;30
+&#39;&#39;Follow up&#39;&#39;
 • If do not proceed to EVT, need repeat angiography at 2-6 hours
 • 24-hour imaging:
 • MRI and MRA, or
-• DECT and CT</tw-passagedata><tw-passagedata pid="19" name="EVACUATE-MRI" tags="" position="1275,625" size="100,100">Acute ICH &lt;24 hours not enrolled in EVACUATE
+• DECT and CT</tw-passagedata><tw-passagedata pid="19" name="EVACUATE-MRI" tags="" position="1275,625" size="100,100">Acute ICH &lt;24 hours not enrolled in EVACUATE (need to fit criteria other than timeframe)
 If within hours, alert research nurses for bloods
-Let &#39;&#39;Chloe&#39;&#39; know --&gt; for Day 3-7 MRI</tw-passagedata><tw-passagedata pid="20" name="EMU" tags="" position="1150,1000" size="100,100">Age &gt;22
+Let &#39;&#39;Chloe&#39;&#39; know --&gt; for Day 3-7 MRI
+
+SURGERY possible &lt;8 hours onset time &#39;&#39;or&#39;&#39; 8 hours within wake up time
+&#39;&#39;Needs CTA&#39;&#39; ?
+Supratentorial only, atraumatic (if felt ICH is secondary to trauma, not eligible)
+
+Inclusion
+• NIHSS ≥6
+• mRS 0-3
+• No underlying vascular lesion on CTA/MR
+
+Excluded: low plt, INR &gt;1.4</tw-passagedata><tw-passagedata pid="20" name="EMU" tags="" position="1150,1000" size="100,100">Age &gt;22
 Within 12 hours of stroke, bleed, mimic
 MTDM or patient must consent</tw-passagedata><tw-passagedata pid="21" name="Wellumio" tags="" position="1400,750" size="100,100">Scan within 72 hours
 Present within 24 hours of symptom onset
 Contact James
 --&gt; two MRI orders</tw-passagedata><tw-passagedata pid="22" name="Untitled Passage" tags="" position="325,150" size="100,100">old mrs
 (input: bind $mrs, &quot;&quot;)(link-repeat: &quot;Submit&quot;)[(if: $mrs is &quot;&quot;)[(replace: ?error)[Please enter a value.]](else: )[(set: $mrs to (num: $mrs))(if: $mrs &gt;= 0 and $mrs &lt;= 5)[(goto: &quot;LKW&quot;)](else: )[(set: $mrs to &quot;&quot;)(replace: ?error)[Invalid entry. Please enter a number from 0 to 5.]]]]
-|error&gt;[]</tw-passagedata></tw-storydata>
+|error&gt;[]</tw-passagedata><tw-passagedata pid="23" name="FRONTIER" tags="" position="775,725" size="100,100"> (if:$type is &quot;isch&quot; and $site is &quot;ant&quot; and $mrs &lt; 3 and $nihss &gt; 4)[[FRONTIER-AP-&gt;FRONTIER]]
+  (if:$type is &quot;isch&quot; and $site is &quot;ant&quot; and $mrs &lt; 3 and $nihss &lt; 5)[[FRONTIER-AP (IF DYSPHASIC ONLY)-&gt;FRONTIER]]
+ 
+ EVT vs. standard of care in medium vessel occlusions
+• Anterior (M2, M3, A1 or A2)
+• Within 24 hours of onset
+• mRS 0-2
+• NIHSS ≥5 or any score for aphasia
+• Randomised via online form
+
+&#39;&#39;Follow up&#39;&#39;
+• 24-hour imaging: CT brain/angiogram/perfusion</tw-passagedata><tw-passagedata pid="24" name="Site" tags="" position="1525,375" size="100,100">Anterior (MCA, ACA) or Posterior (Vertebrobasilar, or PCA)
+
+(link: &quot;Anterior&quot;)[(set: $site to &quot;ant&quot;)(go-to: &quot;Hours&quot;)]
+
+(link: &quot;Posterior&quot;)[(set: $site to &quot;pos&quot;)(go-to: &quot;Hours&quot;)]</tw-passagedata></tw-storydata>
 <script title="Twine engine code" data-main="harlowe">(function(){"use strict";
 var require,define;!function(){var e={},r={};require=function(i){var n=e[i];return n&&(r[i]=n[1].apply(void 0,n[0].map(require)),e[i]=void 0),r[i]},(define=function(r,i,n){if("function"==typeof r)return r();e[r]=[i,n]}).amd=!0}();/*!
  * https://github.com/paulmillr/es6-shim
