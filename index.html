@@ -27,7 +27,7 @@
 
 (link: &quot;No&quot;)[(set: $icad to &quot;no&quot;)(go-to: &quot;Site&quot;)]</tw-passagedata><tw-passagedata pid="5" name="End" tags="" position="1275,500" size="100,100">Options
 (if:$type is &quot;isch&quot; and $isize is 3 and $nihss &gt; 3 and $lyse is &quot;no&quot; and $hr is &quot;yes&quot;)[[RAISE-&gt;RAISE]]
-(if:$type is &quot;isch&quot; and $mrs &lt; 4 and $nihss &gt; 5 and $lysis is &quot;yes&quot; and $hr is &quot;yes&quot;)[[STARS-&gt;STARS]]
+(if:$type is &quot;isch&quot; and $mrs &lt; 4 and $nihss &gt; 5 and $lyse is &quot;yes&quot; and $hr is &quot;yes&quot;)[[STARS-&gt;STARS]]
 (if:$type is &quot;haem&quot; and $nihss &gt; 5 and $size is &quot;&gt;20&quot; and $mrs &lt; 4)[[EVACUATE-&gt;EVACUATE]]
 (if:$type is &quot;haem&quot;)[[EVACUATE-MRI (not if evacuate)-&gt;EVACUATE-MRI]]
 (if:$type is &quot;isch&quot; and $ecr is &quot;yes&quot; and $isize is 1 and $site is &quot;ant&quot;)[[SICARIO-&gt;SICARIO]]
