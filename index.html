@@ -27,7 +27,7 @@
 
 (link: &quot;No&quot;)[(set: $icad to &quot;no&quot;)(go-to: &quot;Site&quot;)]</tw-passagedata><tw-passagedata pid="5" name="End" tags="" position="1275,500" size="100,100">Options
 (if:$type is &quot;isch&quot; and $isize is 3 and $nihss &gt; 3 and $lyse is &quot;no&quot; and $hr is &quot;yes&quot;)[[RAISE-&gt;RAISE]]
-(if:$type is &quot;isch&quot; and $mrs &lt; 4 and $nihss &gt; 5 and $lyse is &quot;yes&quot; and $hr is &quot;yes&quot;)[[STARS-&gt;STARS]]
+(if:$type is &quot;isch&quot; and $mrs &lt; 4 and $nihss &gt; 5 and $lyse is &quot;yes&quot; and $hr is &quot;yes&quot;)[[STARS (on hold at 12/2/2026-&gt;STARS]]
 (if:$type is &quot;haem&quot; and $nihss &gt; 5 and $size is &quot;&gt;20&quot; and $mrs &lt; 4)[[EVACUATE-&gt;EVACUATE]]
 (if:$type is &quot;haem&quot;)[[EVACUATE-MRI (not if evacuate)-&gt;EVACUATE-MRI]]
 (if:$type is &quot;isch&quot; and $ecr is &quot;yes&quot; and $isize is 1 and $site is &quot;ant&quot;)[[SICARIO-&gt;SICARIO]]
@@ -36,14 +36,14 @@
 (if:$type is &quot;isch&quot; and $mrs &lt; 4 and $icad is &quot;no&quot;)[[POST-ETERNAL (BASILAR)-&gt;POST-ETERNAL]]
 Imaging trials / in addition:
 (if:$lkw is &quot;&lt;12&quot; or $lkw is &quot;&lt;4.5&quot;)[[EMU Study-&gt;EMU]]
-(if:$type is &quot;isch&quot;)[[Wellumio-&gt;Wellumio]]
+(if:$type is &quot;haem&quot;)[[Wellumio-&gt;Wellumio]]
 Values used: &#39;&#39;Type&#39;&#39; $type, &#39;&#39;In hours (8-5pm)&#39;&#39; $hr
 &#39;&#39;mRS&#39;&#39; $mrs, &#39;&#39;NIHSS&#39;&#39; $NIHSS, &#39;&#39;LKW&#39;&#39; $lkw
 &#39;&#39;lysed&#39;&#39; $lyse, &#39;&#39;ECR&#39;&#39; $ecr, &#39;&#39;core size&#39;&#39; $isize ml,&#39;&#39; likely icad needing stent&#39;&#39; $icad
 &#39;&#39;bleed size&#39;&#39; $size</tw-passagedata><tw-passagedata pid="6" name="5" tags="" position="900,500" size="100,100">NIHSS score:
 (input: bind $nihss, &quot;&quot;)
-|warn&gt;[](live: 0.1s)[(if: (num: $nihss) &gt; 25 and (num: $nihss) &lt;= 42)[(replace: ?warn)[**Warning:** That number is very high, double check.]](else: )[(replace: ?warn)[]]]
-(link-repeat: &quot;Submit&quot;)[(if: $nihss is not &quot;&quot; and (num: $nihss) &gt;= 0 and (num: $nihss) &lt;= 42 and (num: $nihss) is (round: (num: $nihss)))[(set: $nihss to (num: $nihss))(goto: &quot;6&quot;)](else: )[(set: $nihss to &quot;&quot;)(replace: ?error)[Invalid entry. Please enter a valid NIHSS.]]]
+|warn&gt;[](live: 0.1s)[(if: (num: $nihss) &gt; 22 and (num: $nihss) &lt;= 42)[(replace: ?warn)[**Warning:** That number is very high, double check.]](else: )[(replace: ?warn)[]]]
+(link-repeat: &quot;Submit&quot;)[(if: $nihss is &quot;&quot; or $nihss does not match (p: digit, ...digit))[(replace: ?error)[Invalid entry.]](else:)[(set: _val to (num: $nihss))(if: _val &gt;= 0 and _val &lt;= 42 and _val is (round: _val))[(set: $nihss to _val)(goto: &quot;6&quot;)](else:)[(replace: ?error)[Invalid entry. Please enter a valid NIHSS (0-42).]]]]
 |error&gt;[]</tw-passagedata><tw-passagedata pid="7" name="EVACUATE" tags="" position="1150,625" size="100,100">//EVACUATE//
 SURGERY possible &lt;8 hours onset time &#39;&#39;or&#39;&#39; 8 hours within wake up time
 &#39;&#39;Needs CTA&#39;&#39; (rule out vascular lesion)
@@ -178,8 +178,22 @@ Within 12 hours of stroke, bleed, mimic
 MTDM or patient must consent</tw-passagedata><tw-passagedata pid="21" name="Wellumio" tags="" position="1400,750" size="100,100">Scan within 72 hours
 Present within 24 hours of symptom onset
 Contact James
---&gt; two MRI orders</tw-passagedata><tw-passagedata pid="22" name="Untitled Passage" tags="" position="325,150" size="100,100">old mrs
-(input: bind $mrs, &quot;&quot;)(link-repeat: &quot;Submit&quot;)[(if: $mrs is &quot;&quot;)[(replace: ?error)[Please enter a value.]](else: )[(set: $mrs to (num: $mrs))(if: $mrs &gt;= 0 and $mrs &lt;= 5)[(goto: &quot;LKW&quot;)](else: )[(set: $mrs to &quot;&quot;)(replace: ?error)[Invalid entry. Please enter a number from 0 to 5.]]]]
+--&gt; two MRI orders</tw-passagedata><tw-passagedata pid="22" name="Untitled Passage" tags="" position="325,150" size="100,100">(input: bind $nihss, &quot;&quot;)
+(link-repeat: &quot;Submit&quot;)[
+    (if: $nihss is &quot;&quot; or $nihss does not match (p: digit, ...digit))[
+        (replace: ?error)[Invalid entry. Please enter numbers only.]
+    ]
+    (else:)[
+        (set: _val to (num: $nihss))
+        (if: _val &gt;= 0 and _val &lt;= 42 and _val is (round: _val))[
+            (set: $nihss to _val)
+            (goto: &quot;6&quot;)
+        ]
+        (else:)[
+            (replace: ?error)[Invalid entry. Please enter a valid NIHSS (0-42).]
+        ]
+    ]
+]
 |error&gt;[]</tw-passagedata><tw-passagedata pid="23" name="FRONTIER" tags="" position="775,725" size="100,100"> (if:$type is &quot;isch&quot; and $site is &quot;ant&quot; and $mrs &lt; 3 and $nihss &gt; 4)[[FRONTIER-AP-&gt;FRONTIER]]
   (if:$type is &quot;isch&quot; and $site is &quot;ant&quot; and $mrs &lt; 3 and $nihss &lt; 5)[[FRONTIER-AP (IF DYSPHASIC ONLY)-&gt;FRONTIER]]
  
