@@ -29,7 +29,7 @@
 (link: &quot;Yes&quot;)[(set: $icad to &quot;yes&quot;)(go-to: &quot;Site&quot;)]
 
 (link: &quot;No&quot;)[(set: $icad to &quot;no&quot;)(go-to: &quot;Site&quot;)]</tw-passagedata><tw-passagedata pid="5" name="End" tags="" position="1275,500" size="100,100">Options
-(if:$type is &quot;isch&quot; and $isize is 3 and $nihss &gt; 3 and $lyse is &quot;no&quot; and $hr is &quot;yes&quot;)[[RAISE-&gt;RAISE]]
+(if:$type is &quot;isch&quot; and $isize is 3 and $nihss &gt; 3 and $lyse is &quot;no&quot; and $hr is &quot;yes&quot; and $site is &quot;ant&quot;)[[RAISE-&gt;RAISE]]
 (if:$type is &quot;isch&quot; and $mrs &lt; 4 and $nihss &gt; 5 and $lyse is &quot;yes&quot; and $hr is &quot;yes&quot;)[[STARS-&gt;STARS]]
 (if:$type is &quot;haem&quot; and $nihss &gt; 5 and $size is &quot;&gt;20&quot; and $mrs &lt; 4)[[EVACUATE-&gt;EVACUATE]]
 (if:$type is &quot;haem&quot;)[[EVACUATE-MRI (not if evacuate)-&gt;EVACUATE-MRI]]
@@ -223,27 +223,27 @@ HREC 2024.072
 
 (link: &quot;Anterior&quot;)[(set: $site to &quot;ant&quot;)(go-to: &quot;Hours&quot;)]
 
-(link: &quot;Posterior&quot;)[(set: $site to &quot;pos&quot;)(go-to: &quot;Hours&quot;)]</tw-passagedata><tw-passagedata pid="25" name="Subacute" tags="" position="775,150" size="100,100">&#39;&#39;Subacute&#39;&#39;
+(link: &quot;Posterior&quot;)[(set: $site to &quot;pos&quot;)(go-to: &quot;Hours&quot;)]</tw-passagedata><tw-passagedata pid="25" name="Subacute" tags="" position="625,150" size="100,100">&#39;&#39;Subacute&#39;&#39;
 Stroke Type
 (link: &quot;Ischaemic&quot;)[(set: $type to &quot;isch&quot;)(go-to: &quot;Sub2&quot;)]
 
 (link: &quot;TIA&quot;)[(set: $type to &quot;tia&quot;)(go-to: &quot;Sub2&quot;)]
 
-(link: &quot;Haemorrhagic&quot;)[(set: $type to &quot;haem&quot;)(go-to: &quot;Sub2&quot;)]</tw-passagedata><tw-passagedata pid="26" name="Sub2" tags="" position="900,150" size="100,100">&#39;&#39;Subacute&#39;&#39; (set: $delay to 0)
+(link: &quot;Haemorrhagic&quot;)[(set: $type to &quot;haem&quot;)(go-to: &quot;Sub2&quot;)]</tw-passagedata><tw-passagedata pid="26" name="Sub2" tags="" position="750,150" size="100,100">&#39;&#39;Subacute&#39;&#39; (set: $delay to 0)
 Time since event
 (link: &quot;&lt;48h&quot;)[(set: $delay to 1)(go-to: &quot;Sub3&quot;)]
 (link: &quot;2-7 days&quot;)[(set: $delay to 2)(go-to: &quot;Sub3&quot;)]
 (link: &quot;1-4 weeks&quot;)[(set: $delay to 3)(go-to: &quot;Sub3&quot;)]
 (link: &quot;1-3 months&quot;)[(set: $delay to 4)(go-to: &quot;Sub3&quot;)]
 (link: &quot;3-6 months&quot;)[(set: $delay to 5)(go-to: &quot;Sub3&quot;)]
-(link: &quot;6-12 months&quot;)[(set: $delay to 6)(go-to: &quot;Sub3&quot;)]</tw-passagedata><tw-passagedata pid="27" name="Sub3" tags="" position="1025,150" size="100,100">&#39;&#39;Subacute&#39;&#39; (set: $age to 0)
+(link: &quot;6-12 months&quot;)[(set: $delay to 6)(go-to: &quot;Sub3&quot;)]</tw-passagedata><tw-passagedata pid="27" name="Sub3" tags="" position="875,150" size="100,100">&#39;&#39;Subacute&#39;&#39; (set: $age to 0)
 Age
 (link: &quot;&lt;40&quot;)[(set: $age to 1)(go-to: &quot;Sub4&quot;)]
 (link: &quot;40-50&quot;)[(set: $age to 2)(go-to: &quot;Sub4&quot;)]
-(link: &quot;&gt;50&quot;)[(set: $age to 3)(go-to: &quot;Sub4&quot;)]</tw-passagedata><tw-passagedata pid="28" name="Sub4" tags="" position="1150,150" size="100,100">&#39;&#39;Subacute&#39;&#39;
+(link: &quot;&gt;50&quot;)[(set: $age to 3)(go-to: &quot;Sub4&quot;)]</tw-passagedata><tw-passagedata pid="28" name="Sub4" tags="" position="1000,150" size="100,100">&#39;&#39;Subacute&#39;&#39;
 mRS score&#39;&#39; (now)&#39;&#39;
 (input: bind $mrs, &quot;&quot;)
-(link-repeat: &quot;Submit&quot;)[(if: &quot;012345&quot; contains $mrs and $mrs is not &quot;&quot;)[(set: $mrs to (num: $mrs))(goto: &quot;SubEnd&quot;)](else: )[(set: $mrs to &quot;&quot;)(replace: ?error)[Invalid entry. Please enter a number from 0 to 5.]]]
+(link-repeat: &quot;Submit&quot;)[(if: &quot;012345&quot; contains $mrs and $mrs is not &quot;&quot;)[(set: $mrs to (num: $mrs))(goto: &quot;Sub5&quot;)](else: )[(set: $mrs to &quot;&quot;)(replace: ?error)[Invalid entry. Please enter a number from 0 to 5.]]]
 |error&gt;[]
 0	No symptoms
 1	No significant disability despite symptoms; able to carry out all usual duties and activities
@@ -252,14 +252,37 @@ mRS score&#39;&#39; (now)&#39;&#39;
 4	Moderately severe disability: unable to walk without assistance, and unable to attend to own bodily needs without assistance
 5	Severe disability: bedridden, incontinent, and requiring constant nursing care and attention</tw-passagedata><tw-passagedata pid="29" name="SubEnd" tags="" position="1275,150" size="100,100">&#39;&#39;Subacute&#39;&#39;
 Options
-(if:$type is &quot;isch&quot; and $delay is 1 and $age is 3)[[CervoMED-&gt;CM]]
+(if:$type is &quot;isch&quot; and $delay &lt;= 2 and $age is 3 and $nihss &gt;= 5)[[CervoMED-&gt;CM]]
+(if:($type is &quot;isch&quot; or $type is &quot;tia&quot;) and $delay is 1 and $nihss &lt;= 7)[[Librexia-&gt;Librexia]]
+(if:($type is &quot;isch&quot; or $type is &quot;tia&quot;) and $delay is &lt; 3 and $mrs &lt;= 3)[[LOTUS-&gt;Lotus]]
+(if:$type is &quot;isch&quot; or $type is &quot;tia&quot;)[[CASPER (need to recruit 4-52w post)-&gt;Casper]]
+(if:$delay &gt; 4 and $mrs &lt;= 3)[[MIDAS-2-&gt;Midas]]
+(if:$type is &quot;haem&quot; and $delay &lt; 6 and $mrs &lt;= 3)[[TOSCAA-&gt;TOSCAA]]
 
-Values used: &#39;&#39;Type&#39;&#39; $type, &#39;&#39;mRS&#39;&#39; $mrs, &#39;&#39;Stroke time&#39;&#39; $delay, &#39;&#39;Age&#39;&#39; needtofix</tw-passagedata><tw-passagedata pid="30" name="CM" tags="" position="1275,0" size="100,100">neflamapimod
-day 2-7
+
+Values used: &#39;&#39;Type&#39;&#39; $type, &#39;&#39;mRS&#39;&#39; $mrs, &#39;&#39;Stroke time&#39;&#39; $delay, &#39;&#39;Age&#39;&#39; $age (need to fix)&#39;&#39;NIHSS&#39;&#39; $nihss</tw-passagedata><tw-passagedata pid="30" name="CM" tags="" position="1275,0" size="100,100">neflamapimod
+day 2-7 (look for at &lt;48h)
 ward recruitment
-physio involvement
+physio involvement (Fugl-Meyer PT assessment needed)
 5 &lt;= NIHSS &lt;=20
-age &gt;50, wt &gt;50</tw-passagedata></tw-storydata>
+age &gt;50, wt &gt;50</tw-passagedata><tw-passagedata pid="31" name="Sub5" tags="" position="1125,150" size="100,100">&#39;&#39;Subacute&#39;&#39;
+NIHSS score:
+(input: bind $nihss, &quot;&quot;)
+|warn&gt;[](live: 0.1s)[(if: (num: $nihss) &gt; 22 and (num: $nihss) &lt;= 42)[(replace: ?warn)[**Warning:** That number is very high, double check.]](else: )[(replace: ?warn)[]]]
+(link-repeat: &quot;Submit&quot;)[(if: $nihss is &quot;&quot; or $nihss does not match (p: digit, ...digit))[(replace: ?error)[Invalid entry.]](else:)[(set: _val to (num: $nihss))(if: _val &gt;= 0 and _val &lt;= 42 and _val is (round: _val))[(set: $nihss to _val)(goto: &quot;SubEnd&quot;)](else:)[(replace: ?error)[Invalid entry. Please enter a valid NIHSS (0-42).]]]]
+|error&gt;[]</tw-passagedata><tw-passagedata pid="32" name="Librexia" tags="" position="1400,0" size="100,100">Milvexian (XIa inhibitor) for prevention after AIS or high risk TIA
+&lt;48h symptom onset
+Ischaemic stroke: NIHSS &lt;=7. TIA: ABCD2 &gt;=6</tw-passagedata><tw-passagedata pid="33" name="Lotus" tags="" position="1150,0" size="100,100">Low dose BP +/- cholesterol lowering agents compared to usual care (AIS/TIA)
+Needs pharmacological treatment for BP
+&lt;12w of event initiated
+
+&#39;&#39;Exclusion&#39;&#39;: prior SAH/ICH, going overseas, secondary HTN, eGFR &lt;30, treatment-resistent hypertension
+
+HREC 2025.053</tw-passagedata><tw-passagedata pid="34" name="Midas" tags="" position="1025,0" size="100,100">Modafinil for post-stroke fatigue
+&gt;3months post stroke (AIS/ICH), self-reported fatigue, mRS &lt;=3</tw-passagedata><tw-passagedata pid="35" name="TOSCAA" tags="" position="1400,150" size="100,100">TXA vs placebo in &#39;&#39;CAA&#39;&#39; patients
+mRS &lt;=3</tw-passagedata><tw-passagedata pid="36" name="Casper" tags="" position="900,0" size="100,100">4-52w post event
+mRS &lt;=3
+Colchicine vs placebo post AIS/TIA</tw-passagedata></tw-storydata>
 <script title="Twine engine code" data-main="harlowe">(function(){"use strict";
 var require,define;!function(){var e={},r={};require=function(i){var n=e[i];return n&&(r[i]=n[1].apply(void 0,n[0].map(require)),e[i]=void 0),r[i]},(define=function(r,i,n){if("function"==typeof r)return r();e[r]=[i,n]}).amd=!0}();/*!
  * https://github.com/paulmillr/es6-shim
