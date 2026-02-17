@@ -13,13 +13,16 @@
 (set: $type to 0)(set: $lyse to &quot;-&quot;)(set: $icad to &quot;-&quot;)(set: $ecr to &quot;-&quot;)(set: $hr to &quot;-&quot;)(set: $lkw to &quot;-&quot;)(set: $size to &quot;-&quot;)(set: $isize to 0)
 (link: &quot;Ischaemic&quot;)[(set: $type to &quot;isch&quot;)(go-to: &quot;2&quot;)]
 
-(link: &quot;Haemorrhagic&quot;)[(set: $type to &quot;haem&quot;)(go-to: &quot;Size&quot;)]</tw-passagedata><tw-passagedata pid="2" name="2" tags="" position="1025,375" size="100,100">Thrombolysed
+(link: &quot;Haemorrhagic&quot;)[(set: $type to &quot;haem&quot;)(go-to: &quot;Size&quot;)]
 
-(link: &quot;Yes&quot;)[(set: $lyse to &quot;yes&quot;)(go-to: &quot;3&quot;)]
 
-(link: &quot;No&quot;)[(set: $lyse to &quot;no&quot;)(go-to: &quot;3&quot;)]</tw-passagedata><tw-passagedata pid="3" name="3" tags="" position="1150,375" size="100,100">ECR considered or happening?
+(link: &quot;Click for subacute trials (beta)&quot;)[(go-to: &quot;Subacute&quot;)]</tw-passagedata><tw-passagedata pid="2" name="2" tags="" position="1025,375" size="100,100">Thrombolysed
 
-(link: &quot;Yes&quot;)[(set: $ecr to &quot;yes&quot;)(go-to: &quot;Size2&quot;)]
+(link: &quot;Yes&quot;)[(set: $lyse to &quot;yes&quot;)(go-to: &quot;Size2&quot;)]
+
+(link: &quot;No&quot;)[(set: $lyse to &quot;no&quot;)(go-to: &quot;Size2&quot;)]</tw-passagedata><tw-passagedata pid="3" name="3" tags="" position="1275,375" size="100,100">ECR considered or happening?
+
+(link: &quot;Yes&quot;)[(set: $ecr to &quot;yes&quot;)(go-to: &quot;4&quot;)]
 
 (link: &quot;No&quot;)[(set: $ecr to &quot;no&quot;)(go-to: &quot;Site&quot;)]</tw-passagedata><tw-passagedata pid="4" name="4" tags="" position="1400,375" size="100,100">Relevant severe ICAD/very high likelihood stent?
 
@@ -27,19 +30,19 @@
 
 (link: &quot;No&quot;)[(set: $icad to &quot;no&quot;)(go-to: &quot;Site&quot;)]</tw-passagedata><tw-passagedata pid="5" name="End" tags="" position="1275,500" size="100,100">Options
 (if:$type is &quot;isch&quot; and $isize is 3 and $nihss &gt; 3 and $lyse is &quot;no&quot; and $hr is &quot;yes&quot;)[[RAISE-&gt;RAISE]]
-(if:$type is &quot;isch&quot; and $mrs &lt; 4 and $nihss &gt; 5 and $lyse is &quot;yes&quot; and $hr is &quot;yes&quot;)[[STARS (on hold at 12/2/2026-&gt;STARS]]
+(if:$type is &quot;isch&quot; and $mrs &lt; 4 and $nihss &gt; 5 and $lyse is &quot;yes&quot; and $hr is &quot;yes&quot;)[[STARS-&gt;STARS]]
 (if:$type is &quot;haem&quot; and $nihss &gt; 5 and $size is &quot;&gt;20&quot; and $mrs &lt; 4)[[EVACUATE-&gt;EVACUATE]]
 (if:$type is &quot;haem&quot;)[[EVACUATE-MRI (not if evacuate)-&gt;EVACUATE-MRI]]
 (if:$type is &quot;isch&quot; and $ecr is &quot;yes&quot; and $isize is 1 and $site is &quot;ant&quot;)[[SICARIO-&gt;SICARIO]]
-(if:$lkw is &quot;&lt;4.5&quot; and $type is &quot;isch&quot;)[[ACT-GLOBAL (If on DOAC given &lt;24h)-&gt;ACT-GLOBAL]]
+(if:$lkw is &quot;&lt;4.5&quot; and $type is &quot;isch&quot;)[[ACT-GLOBAL (If on DOAC taken within 24h)-&gt;ACT-GLOBAL]]
 (if:$ecr is &quot;yes&quot; and $site is &quot;ant&quot; and $mrs &lt; 3 and $isize &gt; 1 and $icad is &quot;no&quot;)[[EXTEND-AGNES TNK-&gt;EXTEND]]
-(if:$type is &quot;isch&quot; and $mrs &lt; 4 and $icad is &quot;no&quot;)[[POST-ETERNAL (BASILAR)-&gt;POST-ETERNAL]]
+(if:$type is &quot;isch&quot; and $mrs &lt; 4 and $icad is &quot;no&quot; and $site is &quot;pos&quot;)[[POST-ETERNAL (BASILAR ONLY)-&gt;POST-ETERNAL]]
 Imaging trials / in addition:
-(if:$lkw is &quot;&lt;12&quot; or $lkw is &quot;&lt;4.5&quot;)[[EMU Study-&gt;EMU]]
+(if: ($lkw is &quot;&lt;12&quot; or $lkw is &quot;&lt;4.5&quot;) and ($ecr is not &quot;yes&quot;) and ($lyse is not &quot;yes&quot;))[[EMU Study-&gt;EMU]]
 (if:$type is &quot;haem&quot;)[[Wellumio-&gt;Wellumio]]
 Values used: &#39;&#39;Type&#39;&#39; $type, &#39;&#39;In hours (8-5pm)&#39;&#39; $hr
 &#39;&#39;mRS&#39;&#39; $mrs, &#39;&#39;NIHSS&#39;&#39; $NIHSS, &#39;&#39;LKW&#39;&#39; $lkw
-&#39;&#39;lysed&#39;&#39; $lyse, &#39;&#39;ECR&#39;&#39; $ecr, &#39;&#39;core size&#39;&#39; $isize ml,&#39;&#39; likely icad needing stent&#39;&#39; $icad
+&#39;&#39;lysed&#39;&#39; $lyse, &#39;&#39;ECR&#39;&#39; $ecr, &#39;&#39;core size&#39;&#39; $isize ml,&#39;&#39; likely icad needing stent&#39;&#39; $icad &#39;&#39;site (ant/post)&#39;&#39; $site
 &#39;&#39;bleed size&#39;&#39; $size</tw-passagedata><tw-passagedata pid="6" name="5" tags="" position="900,500" size="100,100">NIHSS score:
 (input: bind $nihss, &quot;&quot;)
 |warn&gt;[](live: 0.1s)[(if: (num: $nihss) &gt; 22 and (num: $nihss) &lt;= 42)[(replace: ?warn)[**Warning:** That number is very high, double check.]](else: )[(replace: ?warn)[]]]
@@ -72,13 +75,13 @@ Minimally invasive evacuation vs standard care
 5	Severe disability: bedridden, incontinent, and requiring constant nursing care and attention</tw-passagedata><tw-passagedata pid="10" name="Hours" tags="" position="775,500" size="100,100">In hours (8 to 430pm?)
 (link: &quot;Yes&quot;)[(set: $hr to &quot;yes&quot;)(go-to: &quot;5&quot;)]
 
-(link: &quot;No&quot;)[(set: $hr to &quot;no&quot;)(go-to: &quot;5&quot;)]</tw-passagedata><tw-passagedata pid="11" name="Size2" tags="" position="1275,375" size="100,100">Core Size
+(link: &quot;No&quot;)[(set: $hr to &quot;no&quot;)(go-to: &quot;5&quot;)]</tw-passagedata><tw-passagedata pid="11" name="Size2" tags="" position="1150,375" size="100,100">Core Size
 
-(link: &quot;&gt;100mL&quot;)[(set: $isize to 1)(go-to: &quot;4&quot;)]
+(link: &quot;&gt;100mL&quot;)[(set: $isize to 1)(go-to: &quot;3&quot;)]
 
-(link: &quot;&lt;100mL&quot;)[(set: $isize to 2)(go-to: &quot;4&quot;)]
+(link: &quot;&lt;100mL&quot;)[(set: $isize to 2)(go-to: &quot;3&quot;)]
 
-(link: &quot;&lt;50mL&quot;)[(set: $isize to 3)(go-to: &quot;4&quot;)]</tw-passagedata><tw-passagedata pid="12" name="SICARIO" tags="" position="1400,625" size="100,100">Observational study: large core ischaemic stroke (&gt;100ml) treated 
+(link: &quot;&lt;50mL&quot;)[(set: $isize to 3)(go-to: &quot;3&quot;)]</tw-passagedata><tw-passagedata pid="12" name="SICARIO" tags="" position="1400,625" size="100,100">Observational study: large core ischaemic stroke (&gt;100ml) treated 
 with EVT on three month functional outcomes
 • Consent is acquired after completion of procedure
 • &#39;&#39;Needs to be considered pre-EVT&#39;&#39; (covered in Code Stroke 
@@ -173,12 +176,23 @@ Inclusion
 • mRS 0-3
 • No underlying vascular lesion on CTA/MR
 
-Excluded: low plt, INR &gt;1.4</tw-passagedata><tw-passagedata pid="20" name="EMU" tags="" position="1150,1000" size="100,100">Age &gt;22
-Within 12 hours of stroke, bleed, mimic
-MTDM or patient must consent</tw-passagedata><tw-passagedata pid="21" name="Wellumio" tags="" position="1400,750" size="100,100">Scan within 72 hours
-Present within 24 hours of symptom onset
-Contact James
---&gt; two MRI orders</tw-passagedata><tw-passagedata pid="22" name="Untitled Passage" tags="" position="325,150" size="100,100">(input: bind $nihss, &quot;&quot;)
+Excluded: low plt, INR &gt;1.4</tw-passagedata><tw-passagedata pid="20" name="EMU" tags="" position="1150,1000" size="100,100">Demonstrate haemorrhage detection capacity
+Age &gt;22
+Within &#39;&#39;12 hours&#39;&#39; of stroke, bleed, mimic
+&#39;&#39;Cannot&#39;&#39; have lysis/ECR prior (cannot use if going to delay Rx)
+MTDM or patient must consent
+
+Standard of care CT then EMvision scan to follow
+HREC 2025.052</tw-passagedata><tw-passagedata pid="21" name="Wellumio" tags="" position="1400,750" size="100,100">//(only recruiting haemorrhages as of 2/2026)//
+Safety/tolerability 0.1T MRI in (ischaemic stroke and) haemorrhage
+Present within 24 hours of symptom onset, suspected stroke
+Need standard MRI (T2, FLAIR, ADC, DWI, GRE) then Wellumio scan both within 72 hours --&gt; two orders
+Contact &#39;&#39;James&#39;&#39;
+HREC 2024.072
+
+&#39;&#39;Exclusion&#39;&#39;: can&#39;t have MRI (electrostimulating device in head/neck, mesh/plates in face - coils OK)
+
+</tw-passagedata><tw-passagedata pid="22" name="test" tags="" position="325,150" size="100,100">(input: bind $nihss, &quot;&quot;)
 (link-repeat: &quot;Submit&quot;)[
     (if: $nihss is &quot;&quot; or $nihss does not match (p: digit, ...digit))[
         (replace: ?error)[Invalid entry. Please enter numbers only.]
@@ -209,7 +223,43 @@ Contact James
 
 (link: &quot;Anterior&quot;)[(set: $site to &quot;ant&quot;)(go-to: &quot;Hours&quot;)]
 
-(link: &quot;Posterior&quot;)[(set: $site to &quot;pos&quot;)(go-to: &quot;Hours&quot;)]</tw-passagedata></tw-storydata>
+(link: &quot;Posterior&quot;)[(set: $site to &quot;pos&quot;)(go-to: &quot;Hours&quot;)]</tw-passagedata><tw-passagedata pid="25" name="Subacute" tags="" position="775,150" size="100,100">&#39;&#39;Subacute&#39;&#39;
+Stroke Type
+(link: &quot;Ischaemic&quot;)[(set: $type to &quot;isch&quot;)(go-to: &quot;Sub2&quot;)]
+
+(link: &quot;TIA&quot;)[(set: $type to &quot;tia&quot;)(go-to: &quot;Sub2&quot;)]
+
+(link: &quot;Haemorrhagic&quot;)[(set: $type to &quot;haem&quot;)(go-to: &quot;Sub2&quot;)]</tw-passagedata><tw-passagedata pid="26" name="Sub2" tags="" position="900,150" size="100,100">&#39;&#39;Subacute&#39;&#39; (set: $delay to 0)
+Time since event
+(link: &quot;&lt;48h&quot;)[(set: $delay to 1)(go-to: &quot;Sub3&quot;)]
+(link: &quot;2-7 days&quot;)[(set: $delay to 2)(go-to: &quot;Sub3&quot;)]
+(link: &quot;1-4 weeks&quot;)[(set: $delay to 3)(go-to: &quot;Sub3&quot;)]
+(link: &quot;1-3 months&quot;)[(set: $delay to 4)(go-to: &quot;Sub3&quot;)]
+(link: &quot;3-6 months&quot;)[(set: $delay to 5)(go-to: &quot;Sub3&quot;)]
+(link: &quot;6-12 months&quot;)[(set: $delay to 6)(go-to: &quot;Sub3&quot;)]</tw-passagedata><tw-passagedata pid="27" name="Sub3" tags="" position="1025,150" size="100,100">&#39;&#39;Subacute&#39;&#39; (set: $age to 0)
+Age
+(link: &quot;&lt;40&quot;)[(set: $age to 1)(go-to: &quot;Sub4&quot;)]
+(link: &quot;40-50&quot;)[(set: $age to 2)(go-to: &quot;Sub4&quot;)]
+(link: &quot;&gt;50&quot;)[(set: $age to 3)(go-to: &quot;Sub4&quot;)]</tw-passagedata><tw-passagedata pid="28" name="Sub4" tags="" position="1150,150" size="100,100">&#39;&#39;Subacute&#39;&#39;
+mRS score&#39;&#39; (now)&#39;&#39;
+(input: bind $mrs, &quot;&quot;)
+(link-repeat: &quot;Submit&quot;)[(if: &quot;012345&quot; contains $mrs and $mrs is not &quot;&quot;)[(set: $mrs to (num: $mrs))(goto: &quot;SubEnd&quot;)](else: )[(set: $mrs to &quot;&quot;)(replace: ?error)[Invalid entry. Please enter a number from 0 to 5.]]]
+|error&gt;[]
+0	No symptoms
+1	No significant disability despite symptoms; able to carry out all usual duties and activities
+2	Slight disability: unable to carry out all previous activities but able to look after own affairs without assistance
+3	Moderate disability: requiring some help, but *able to walk without assistance
+4	Moderately severe disability: unable to walk without assistance, and unable to attend to own bodily needs without assistance
+5	Severe disability: bedridden, incontinent, and requiring constant nursing care and attention</tw-passagedata><tw-passagedata pid="29" name="SubEnd" tags="" position="1275,150" size="100,100">&#39;&#39;Subacute&#39;&#39;
+Options
+(if:$type is &quot;isch&quot; and $delay is 1 and $age is 3)[[CervoMED-&gt;CM]]
+
+Values used: &#39;&#39;Type&#39;&#39; $type, &#39;&#39;mRS&#39;&#39; $mrs, &#39;&#39;Stroke time&#39;&#39; $delay, &#39;&#39;Age&#39;&#39; needtofix</tw-passagedata><tw-passagedata pid="30" name="CM" tags="" position="1275,0" size="100,100">neflamapimod
+day 2-7
+ward recruitment
+physio involvement
+5 &lt;= NIHSS &lt;=20
+age &gt;50, wt &gt;50</tw-passagedata></tw-storydata>
 <script title="Twine engine code" data-main="harlowe">(function(){"use strict";
 var require,define;!function(){var e={},r={};require=function(i){var n=e[i];return n&&(r[i]=n[1].apply(void 0,n[0].map(require)),e[i]=void 0),r[i]},(define=function(r,i,n){if("function"==typeof r)return r();e[r]=[i,n]}).amd=!0}();/*!
  * https://github.com/paulmillr/es6-shim
