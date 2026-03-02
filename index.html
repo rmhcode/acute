@@ -30,7 +30,7 @@
 
 (link: &quot;No&quot;)[(set: $icad to &quot;no&quot;)(go-to: &quot;Site&quot;)]</tw-passagedata><tw-passagedata pid="5" name="End" tags="" position="1275,500" size="100,100">Options
 (if:$type is &quot;isch&quot; and $isize is 3 and $nihss &gt; 3 and $lyse is &quot;no&quot; and $hr is &quot;yes&quot; and $site is &quot;ant&quot;)[[RAISE-&gt;RAISE]]
-(if:$type is &quot;isch&quot; and $mrs &lt; 4 and $nihss &gt; 5 and $lyse is &quot;yes&quot; and $hr is &quot;yes&quot;)[[STARS-&gt;STARS]]
+(if:$type is &quot;isch&quot; and $mrs &lt; 4 and $nihss &gt; 4 and $lyse is &quot;yes&quot; and $hr is &quot;yes&quot;)[[STARS-&gt;STARS]]
 (if:$type is &quot;haem&quot; and $nihss &gt; 5 and $size is &quot;&gt;20&quot; and $mrs &lt; 4)[[EVACUATE-&gt;EVACUATE]]
 (if:$type is &quot;haem&quot;)[[EVACUATE-MRI (not if evacuate)-&gt;EVACUATE-MRI]]
 (if:$type is &quot;isch&quot; and $ecr is &quot;yes&quot; and $isize is 1 and $site is &quot;ant&quot;)[[SICARIO-&gt;SICARIO]]
@@ -39,7 +39,6 @@
 (if:$type is &quot;isch&quot; and $mrs &lt; 4 and $icad is &quot;no&quot; and $site is &quot;pos&quot;)[[POST-ETERNAL (BASILAR ONLY)-&gt;POST-ETERNAL]]
 Imaging trials / in addition:
 (if: ($lkw is &quot;&lt;12&quot; or $lkw is &quot;&lt;4.5&quot;) and ($ecr is not &quot;yes&quot;) and ($lyse is not &quot;yes&quot;))[[EMU Study-&gt;EMU]]
-(if:$type is &quot;haem&quot;)[[Wellumio-&gt;Wellumio]]
 Values used: &#39;&#39;Type&#39;&#39; $type, &#39;&#39;In hours (8-5pm)&#39;&#39; $hr
 &#39;&#39;mRS&#39;&#39; $mrs, &#39;&#39;NIHSS&#39;&#39; $NIHSS, &#39;&#39;LKW&#39;&#39; $lkw
 &#39;&#39;lysed&#39;&#39; $lyse, &#39;&#39;ECR&#39;&#39; $ecr, &#39;&#39;core size&#39;&#39; $isize ml,&#39;&#39; likely icad needing stent&#39;&#39; $icad &#39;&#39;site (ant/post)&#39;&#39; $site
@@ -183,7 +182,7 @@ Within &#39;&#39;12 hours&#39;&#39; of stroke, bleed, mimic
 MTDM or patient must consent
 
 Standard of care CT then EMvision scan to follow
-HREC 2025.052</tw-passagedata><tw-passagedata pid="21" name="Wellumio" tags="" position="1400,750" size="100,100">//(only recruiting haemorrhages as of 2/2026)//
+HREC 2025.052</tw-passagedata><tw-passagedata pid="21" name="Wellumio" tags="" position="1600,750" size="100,100">//(only recruiting haemorrhages as of 2/2026)//
 Safety/tolerability 0.1T MRI in (ischaemic stroke and) haemorrhage
 Present within 24 hours of symptom onset, suspected stroke
 Need standard MRI (T2, FLAIR, ADC, DWI, GRE) then Wellumio scan both within 72 hours --&gt; two orders
@@ -192,7 +191,8 @@ HREC 2024.072
 
 &#39;&#39;Exclusion&#39;&#39;: can&#39;t have MRI (electrostimulating device in head/neck, mesh/plates in face - coils OK)
 
-</tw-passagedata><tw-passagedata pid="22" name="test" tags="" position="325,150" size="100,100">(input: bind $nihss, &quot;&quot;)
+
+(if:$type is &quot;haem&quot;)[[Wellumio-&gt;Wellumio]]</tw-passagedata><tw-passagedata pid="22" name="test" tags="" position="325,150" size="100,100">(input: bind $nihss, &quot;&quot;)
 (link-repeat: &quot;Submit&quot;)[
     (if: $nihss is &quot;&quot; or $nihss does not match (p: digit, ...digit))[
         (replace: ?error)[Invalid entry. Please enter numbers only.]
