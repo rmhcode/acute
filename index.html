@@ -9,7 +9,7 @@
 </head>
 <body>
 <tw-story><noscript><tw-noscript>JavaScript needs to be enabled to play Stroke Trial Recruitment.</tw-noscript></noscript></tw-story>
-<tw-storydata name="Stroke Trial Recruitment" startnode="1" creator="Twine" creator-version="2.11.1" format="Harlowe" format-version="3.3.9" ifid="50BB4529-58D3-41CE-B787-62196779D688" options="" tags="" zoom="1" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css"></style><script role="script" id="twine-user-script" type="text/twine-javascript"></script><tw-passagedata pid="1" name="1" tags="" position="775,375" size="100,100">Stroke Type
+<tw-storydata name="Stroke Trial Recruitment" startnode="1" creator="Twine" creator-version="2.12.0" format="Harlowe" format-version="3.3.9" ifid="50BB4529-58D3-41CE-B787-62196779D688" options="" tags="" zoom="1" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css"></style><script role="script" id="twine-user-script" type="text/twine-javascript"></script><tw-passagedata pid="1" name="1" tags="" position="775,375" size="100,100">Stroke Type
 (set: $type to 0)(set: $lyse to &quot;-&quot;)(set: $icad to &quot;-&quot;)(set: $ecr to &quot;-&quot;)(set: $hr to &quot;-&quot;)(set: $lkw to &quot;-&quot;)(set: $size to &quot;-&quot;)(set: $isize to 0)
 (link: &quot;Ischaemic&quot;)[(set: $type to &quot;isch&quot;)(go-to: &quot;2&quot;)]
 
@@ -37,6 +37,8 @@
 (if:$lkw is &quot;&lt;4.5&quot; and $type is &quot;isch&quot;)[[ACT-GLOBAL (If on DOAC taken within 24h)-&gt;ACT-GLOBAL]]
 (if:$ecr is &quot;yes&quot; and $site is &quot;ant&quot; and $mrs &lt; 3 and $isize &gt; 1 and $icad is &quot;no&quot;)[[EXTEND-AGNES TNK-&gt;EXTEND]]
 (if:$type is &quot;isch&quot; and $mrs &lt; 4 and $icad is &quot;no&quot; and $site is &quot;pos&quot;)[[POST-ETERNAL (BASILAR ONLY)-&gt;POST-ETERNAL]]
+(if:$type is &quot;isch&quot; and $mrs &lt; 2 and $nihss &gt; 5 and $site is &quot;ant&quot; and $lkw is &quot;&gt;24&quot;)[[SELECT-LATE-&gt;SELECT]]
+(if:$type is &quot;isch&quot; and $mrs &lt; 2 and $nihss &lt; 26 and $nihss &gt; 5 and $lkw is not  &quot;&lt;4.5&quot;)[[TENACITY (TRANSFERS)-&gt;TENACITY]]
 Imaging trials / in addition:
 (if: ($lkw is &quot;&lt;12&quot; or $lkw is &quot;&lt;4.5&quot;) and ($ecr is not &quot;yes&quot;) and ($lyse is not &quot;yes&quot;))[[EMU Study-&gt;EMU]]
 Values used: &#39;&#39;Type&#39;&#39; $type, &#39;&#39;In hours (8-5pm)&#39;&#39; $hr
@@ -92,7 +94,8 @@ SmartPhrase)
 (link: &quot;&lt;12h&quot;)[(set: $lkw to &quot;&lt;12&quot;)(go-to: &quot;End&quot;)]
 
 (link: &quot;&lt;24h&quot;)[(set: $lkw to &quot;&lt;24&quot;)(go-to: &quot;End&quot;)]
-If &gt;24h, not eligible for acute trials</tw-passagedata><tw-passagedata pid="14" name="ACT-GLOBAL" tags="" position="1150,750" size="100,100">//ACT-GLOBAL (ACT-WHEN)//
+
+(link: &quot;24-72h&quot;)[(set: $lkw to &quot;&gt;24&quot;)(go-to: &quot;End&quot;)]</tw-passagedata><tw-passagedata pid="14" name="ACT-GLOBAL" tags="" position="1150,750" size="100,100">//ACT-GLOBAL (ACT-WHEN)//
 IVT (standard 0.25mg/kg or low dose 0.18mg/kg) vs TNK in those with &#39;&#39;DOAC in previous 24 hours&#39;&#39;
 Minor stroke patients with non-disabling symptoms are excluded (generally, complete hemianopia, severe aphasia &gt;=2, visual extinction &gt;=1m, weakness scores of &gt;=2 on either arm or either leg, any other considered disabling by patient/family/clinician/prevent basic ADLs)
 
@@ -282,7 +285,23 @@ HREC 2025.053</tw-passagedata><tw-passagedata pid="34" name="Midas" tags="" posi
 &gt;3months post stroke (AIS/ICH), self-reported fatigue, mRS &lt;=3</tw-passagedata><tw-passagedata pid="35" name="TOSCAA" tags="" position="1400,150" size="100,100">TXA vs placebo in &#39;&#39;CAA&#39;&#39; patients
 mRS &lt;=3</tw-passagedata><tw-passagedata pid="36" name="Casper" tags="" position="900,0" size="100,100">4-52w post event
 mRS &lt;=3
-Colchicine vs placebo post AIS/TIA</tw-passagedata></tw-storydata>
+Colchicine vs placebo post AIS/TIA</tw-passagedata><tw-passagedata pid="37" name="SELECT" tags="" position="1525,625" size="100,100">SELECT-LATE
+24-72h LKW
+Does EVT added to medical management achieve better fxn outcomes
+Age 18-85. NIHSS &gt;=6, LKW 24-72h, mRS 0-1 prior, eligible for thrombectomy
+Must be ICA/M1
+ASPECTS 3-10
+Core &lt;=150mL</tw-passagedata><tw-passagedata pid="38" name="TENACITY" tags="" position="1400,750" size="100,100">TENACITY
+IV TNK in &gt;4.5 hours, versus standard of care ( can include EVT)
+
+4.5-72h
+mRS &lt;=1
+NIHSS 6-25
+Need 1.2x mismatch AND &gt;10mL mismatch AND lesion NCCT not larger than estimated ischaemic core lesion
+Cannot
+- EVT at primary site
+- ICA occlusion
+</tw-passagedata></tw-storydata>
 <script title="Twine engine code" data-main="harlowe">(function(){"use strict";
 var require,define;!function(){var e={},r={};require=function(i){var n=e[i];return n&&(r[i]=n[1].apply(void 0,n[0].map(require)),e[i]=void 0),r[i]},(define=function(r,i,n){if("function"==typeof r)return r();e[r]=[i,n]}).amd=!0}();/*!
  * https://github.com/paulmillr/es6-shim
