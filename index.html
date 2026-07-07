@@ -39,8 +39,9 @@
 (if:$type is &quot;isch&quot; and $mrs &lt; 4 and $icad is &quot;no&quot; and $site is &quot;pos&quot;)[[POST-ETERNAL (BASILAR ONLY)-&gt;POST-ETERNAL]]
 (if:$type is &quot;isch&quot; and $mrs &lt; 2 and $nihss &gt; 5 and $site is &quot;ant&quot; and $lkw is &quot;&gt;24&quot;)[[SELECT-LATE-&gt;SELECT]]
 (if:$type is &quot;isch&quot; and $mrs &lt; 2 and $nihss &lt; 26 and $nihss &gt; 5 and $lkw is not  &quot;&lt;4.5&quot;)[[TENACITY (TRANSFERS)-&gt;TENACITY]]
+(if:$ecr is &quot;yes&quot; and $mrs &lt; 3 and $isize is not 3 and $nihss &lt; 26 and $nihss &gt; 9 and ($lkw is &quot;&lt;12&quot; or $lkw is &quot;&lt;4.5&quot;) and $site is &quot;ant&quot;)[[GAMES3-&gt;GAMES]]
 Imaging trials / in addition:
-(if: ($lkw is &quot;&lt;12&quot; or $lkw is &quot;&lt;4.5&quot;) and ($ecr is not &quot;yes&quot;) and ($lyse is not &quot;yes&quot;))[[EMU Study-&gt;EMU]]
+(if: $lkw is not &quot;&gt;24&quot; and $ecr is not &quot;yes&quot; and $lyse is not &quot;yes&quot;)[[EMU Study-&gt;EMU]]
 Values used: &#39;&#39;Type&#39;&#39; $type, &#39;&#39;In hours (8-5pm)&#39;&#39; $hr
 &#39;&#39;mRS&#39;&#39; $mrs, &#39;&#39;NIHSS&#39;&#39; $NIHSS, &#39;&#39;LKW&#39;&#39; $lkw
 &#39;&#39;lysed&#39;&#39; $lyse, &#39;&#39;ECR&#39;&#39; $ecr, &#39;&#39;core size&#39;&#39; $isize ml,&#39;&#39; likely icad needing stent&#39;&#39; $icad &#39;&#39;site (ant/post)&#39;&#39; $site
@@ -256,7 +257,6 @@ mRS score&#39;&#39; (now)&#39;&#39;
 5	Severe disability: bedridden, incontinent, and requiring constant nursing care and attention</tw-passagedata><tw-passagedata pid="29" name="SubEnd" tags="" position="1275,150" size="100,100">&#39;&#39;Subacute&#39;&#39;
 Options
 (if:$type is &quot;isch&quot; and $delay &lt;= 2 and $age is 3 and $nihss &gt;= 5)[[CervoMED-&gt;CM]]
-(if:($type is &quot;isch&quot; or $type is &quot;tia&quot;) and $delay is 1 and $nihss &lt;= 7)[[Librexia-&gt;Librexia]]
 (if:($type is &quot;isch&quot; or $type is &quot;tia&quot;) and $delay is &lt; 3 and $mrs &lt;= 3)[[LOTUS-&gt;Lotus]]
 (if:$type is &quot;isch&quot; or $type is &quot;tia&quot;)[[CASPER (need to recruit 4-52w post)-&gt;Casper]]
 (if:$delay &gt; 4 and $mrs &lt;= 3)[[MIDAS-2-&gt;Midas]]
@@ -273,25 +273,23 @@ NIHSS score:
 (input: bind $nihss, &quot;&quot;)
 |warn&gt;[](live: 0.1s)[(if: (num: $nihss) &gt; 22 and (num: $nihss) &lt;= 42)[(replace: ?warn)[**Warning:** That number is very high, double check.]](else: )[(replace: ?warn)[]]]
 (link-repeat: &quot;Submit&quot;)[(if: $nihss is &quot;&quot; or $nihss does not match (p: digit, ...digit))[(replace: ?error)[Invalid entry.]](else:)[(set: _val to (num: $nihss))(if: _val &gt;= 0 and _val &lt;= 42 and _val is (round: _val))[(set: $nihss to _val)(goto: &quot;SubEnd&quot;)](else:)[(replace: ?error)[Invalid entry. Please enter a valid NIHSS (0-42).]]]]
-|error&gt;[]</tw-passagedata><tw-passagedata pid="32" name="Librexia" tags="" position="1400,0" size="100,100">Milvexian (XIa inhibitor) for prevention after AIS or high risk TIA
-&lt;48h symptom onset
-Ischaemic stroke: NIHSS &lt;=7. TIA: ABCD2 &gt;=6</tw-passagedata><tw-passagedata pid="33" name="Lotus" tags="" position="1150,0" size="100,100">Low dose BP +/- cholesterol lowering agents compared to usual care (AIS/TIA)
+|error&gt;[]</tw-passagedata><tw-passagedata pid="32" name="Lotus" tags="" position="1150,0" size="100,100">Low dose BP +/- cholesterol lowering agents compared to usual care (AIS/TIA)
 Needs pharmacological treatment for BP
 &lt;12w of event initiated
 
 &#39;&#39;Exclusion&#39;&#39;: prior SAH/ICH, going overseas, secondary HTN, eGFR &lt;30, treatment-resistent hypertension
 
-HREC 2025.053</tw-passagedata><tw-passagedata pid="34" name="Midas" tags="" position="1025,0" size="100,100">Modafinil for post-stroke fatigue
-&gt;3months post stroke (AIS/ICH), self-reported fatigue, mRS &lt;=3</tw-passagedata><tw-passagedata pid="35" name="TOSCAA" tags="" position="1400,150" size="100,100">TXA vs placebo in &#39;&#39;CAA&#39;&#39; patients
-mRS &lt;=3</tw-passagedata><tw-passagedata pid="36" name="Casper" tags="" position="900,0" size="100,100">4-52w post event
+HREC 2025.053</tw-passagedata><tw-passagedata pid="33" name="Midas" tags="" position="1025,0" size="100,100">Modafinil for post-stroke fatigue
+&gt;3months post stroke (AIS/ICH), self-reported fatigue, mRS &lt;=3</tw-passagedata><tw-passagedata pid="34" name="TOSCAA" tags="" position="1400,150" size="100,100">TXA vs placebo in &#39;&#39;CAA&#39;&#39; patients
+mRS &lt;=3</tw-passagedata><tw-passagedata pid="35" name="Casper" tags="" position="900,0" size="100,100">4-52w post event
 mRS &lt;=3
-Colchicine vs placebo post AIS/TIA</tw-passagedata><tw-passagedata pid="37" name="SELECT" tags="" position="1525,625" size="100,100">SELECT-LATE
+Colchicine vs placebo post AIS/TIA</tw-passagedata><tw-passagedata pid="36" name="SELECT" tags="" position="1525,625" size="100,100">SELECT-LATE
 24-72h LKW
 Does EVT added to medical management achieve better fxn outcomes
 Age 18-85. NIHSS &gt;=6, LKW 24-72h, mRS 0-1 prior, eligible for thrombectomy
 Must be ICA/M1
 ASPECTS 3-10
-Core &lt;=150mL</tw-passagedata><tw-passagedata pid="38" name="TENACITY" tags="" position="1400,750" size="100,100">TENACITY
+Core &lt;=150mL</tw-passagedata><tw-passagedata pid="37" name="TENACITY" tags="" position="1400,750" size="100,100">TENACITY
 IV TNK in &gt;4.5 hours, versus standard of care ( can include EVT)
 
 4.5-72h
@@ -301,7 +299,27 @@ Need 1.2x mismatch AND &gt;10mL mismatch AND lesion NCCT not larger than estimat
 Cannot
 - EVT at primary site
 - ICA occlusion
-</tw-passagedata></tw-storydata>
+</tw-passagedata><tw-passagedata pid="38" name="GAMES" tags="" position="1350,1000" size="100,100">IV glibenclamide &lt;10 hours LKW (or midpoint sleep for wake up) infused 72h age 18-80 and planned EVT, will improve functional outcomes
+&#39;&#39;MUST BE&#39;&#39;
+- &#39;&#39;18-80&#39;&#39; (age 70-80 only limited recruitment)
+- NIHSS 10-25
+- &quot;Functionally independent&quot; (mRS &lt;=2)
+- Getting EVT
+- ANTERIOR ICA, M1, M2 (L hemisphere)
+- Core 70-125mL on CTP (and hypodensity can&#39;t exceed that territory)
+- Within 3 hours
+
+If not within 3 hours of imaging (transfers)
+Needs to be rescanned
+
+&#39;&#39;CANNOT&#39;&#39;
+- be going for immediate hemicraniectomy, of midline shift &gt;2mm
+- Contralateral infarction that is serious
+- Clinical herniation, loss of brainstem etc
+- Sulfonylurea allergy
+- On glibenclamide, previous DKA
+- Dialysis, cirrhosis, severe COPD, terminal illness
+- Pregnant, terminal illness</tw-passagedata></tw-storydata>
 <script title="Twine engine code" data-main="harlowe">(function(){"use strict";
 var require,define;!function(){var e={},r={};require=function(i){var n=e[i];return n&&(r[i]=n[1].apply(void 0,n[0].map(require)),e[i]=void 0),r[i]},(define=function(r,i,n){if("function"==typeof r)return r();e[r]=[i,n]}).amd=!0}();/*!
  * https://github.com/paulmillr/es6-shim
